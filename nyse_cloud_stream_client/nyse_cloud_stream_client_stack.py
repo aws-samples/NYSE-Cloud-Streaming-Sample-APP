@@ -29,7 +29,7 @@ class NyseCloudStreamClientStack(Stack):
             vpc_name="Cloud Stream VPC",
             ip_addresses= ec2.IpAddresses.cidr(config.vpc_cidr),
             nat_gateways=1,
-            availability_zones=config.vpc_azs,
+            availability_zones=vpc_azs,
             subnet_configuration=[
                 ec2.SubnetConfiguration(
                     cidr_mask=24,
@@ -96,10 +96,11 @@ class NyseCloudStreamClientStack(Stack):
             machine_image = ec2.MachineImage.latest_amazon_linux2023(),
             security_group = vpc_security_group,
             vpc = cloudstream_vpc,
-            key_name = config.ec2_key_pair,
             vpc_subnets=ec2.SubnetSelection(availability_zones=vpc_azs),
             availability_zone=vpc_azs[1],
-            user_data=ec2.UserData.custom(user_data))
+            user_data=ec2.UserData.custom(user_data),
+            key_name = config.ec2_key_pair
+        )
         
         instance.user_data.add_commands(
             f"echo \"export BROKERS={str(config.bootstrap_brokers)}\" >> /home/ec2-user/.bashrc \n",

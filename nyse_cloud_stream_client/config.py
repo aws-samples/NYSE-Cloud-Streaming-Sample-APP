@@ -14,5 +14,5 @@ cloudstream_password=""
 ###
 ### Infrastructure configuration
 ###
-ec2_key_pair=""
+ec2_key_pair="pulse-key"
 vpc_cidr = "10.10.0.0/16"
