@@ -8,6 +8,7 @@ from constructs import Construct
 
 from . import config
 
+vpc_azs = []
 class NyseCloudStreamClientStack(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
@@ -20,7 +21,7 @@ class NyseCloudStreamClientStack(Stack):
         for az in azs.get('AvailabilityZones'):
             for az_id in config.vpc_azs_ids:
                 if az_id == az.get('ZoneId'):
-                    config.vpc_azs.append(az.get('ZoneName'))
+                    vpc_azs.append(az.get('ZoneName'))
             x += 1
 
         # Create CloudStream consumer VPC
@@ -62,7 +63,7 @@ class NyseCloudStreamClientStack(Stack):
         # Add VPC Interface endpoints to vpc and DNS Entries
         x=0
         for endpoint_service_id in config.endpoint_service_ids:
-            endpoint = cloudstream_vpc.add_interface_endpoint("Cloud Stream Endpoint"+str(x), service=ec2.InterfaceVpcEndpointService(endpoint_service_id,9092), subnets=ec2.SubnetSelection(availability_zones=[config.vpc_azs[x]]))
+            endpoint = cloudstream_vpc.add_interface_endpoint("Cloud Stream Endpoint"+str(x), service=ec2.InterfaceVpcEndpointService(endpoint_service_id,9092), subnets=ec2.SubnetSelection(availability_zones=[vpc_azs[x]]))
             Tags.of(endpoint).add("Name", "Cloud Stream - Endpoint"+str(x))
             endpoint_dns=Fn.split(":",Fn.select(0, endpoint.vpc_endpoint_dns_entries),assumed_length=2)
             route53.CnameRecord(self, "AliasRecord"+str(x), 
@@ -95,9 +96,9 @@ class NyseCloudStreamClientStack(Stack):
             machine_image = ec2.MachineImage.latest_amazon_linux2023(),
             security_group = vpc_security_group,
             vpc = cloudstream_vpc,
-            key_name = config.EC2_KEY_PAIR,
-            vpc_subnets=ec2.SubnetSelection(availability_zones=config.vpc_azs),
-            availability_zone=config.vpc_azs[1],
+            key_name = config.ec2_key_pair,
+            vpc_subnets=ec2.SubnetSelection(availability_zones=vpc_azs),
+            availability_zone=vpc_azs[1],
             user_data=ec2.UserData.custom(user_data))
         
         instance.user_data.add_commands(
@@ -106,12 +107,13 @@ class NyseCloudStreamClientStack(Stack):
             "cat <<EOF > /home/ec2-user/kafka/users_jaas.conf",
             "KafkaClient {",
             f"    org.apache.kafka.common.security.scram.ScramLoginModule required",
-            f'    username="{config.CLOUDSTREAM_USERNAME}"',
-            f'    password="{config.CLOUDSTREAM_PASSWORD}";',
+            f'    username="{config.cloudstream_username}"',
+            f'    password="{config.cloudstream_password}";',
             "};",
             "EOF",
-            f'echo \"export KAFKA_SASL_MECHANISM={config.CLOUDSTREAN_SASL_MECHANISM}\" >> /home/ec2-user/.bashrc \n',
-            f'echo \"export KAFKA_SASL_USERNAME={config.CLOUDSTREAM_USERNAME}\" >> /home/ec2-user/.bashrc \n',
-            f'echo \"export KAFKA_SASL_PASSWORD={config.CLOUDSTREAM_PASSWORD}\" >> /home/ec2-user/.bashrc \n',
+            f'echo \"export KAFKA_SASL_USERNAME={config.cloudstream_username}\" >> /home/ec2-user/.bashrc \n',
+            f'echo \"export KAFKA_SASL_PASSWORD={config.cloudstream_password}\" >> /home/ec2-user/.bashrc \n',
+            f'echo \"export KAFKA_GROUP_ID={config.cloudstream_group_id}\" >> /home/ec2-user/.bashrc \n',
+            f'echo \"export KAFKA_TOPICS={config.cloudstream_topics}\" >> /home/ec2-user/.bashrc \n',
             f'echo \"export KAFKA_OPTS=-Djava.security.auth.login.config=/home/ec2-user/kafka/users_jaas.conf\" >> /home/ec2-user/.bashrc \n',
         )

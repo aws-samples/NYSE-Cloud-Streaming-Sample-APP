@@ -17,8 +17,8 @@ cd /home/ec2-user/kafka/libs
 wget https://github.com/aws/aws-msk-iam-auth/releases/download/v1.1.1/aws-msk-iam-auth-1.1.1-all.jar
 
 cd /home/ec2-user
-su ec2-user -c "git clone https://github.com/soadiego/kafka-client-examples.git /home/ec2-user/kafka-clients"
-su ec2-user -c "protoc -I=/home/ec2-user/kafka-clients/ --python_out=/home/ec2-user/kafka-clients/ /home/ec2-user/kafka-clients/alpaca.proto"
+su ec2-user -c "git clone https://github.com/aws-samples/NYSE-Cloud-Streaming-Sample-APP.git /home/ec2-user/cloud-streaming-app"
+su ec2-user -c "cp -r /home/ec2-user/cloud-streaming-app/client/ /home/ec2-user/kafka-clients/"
 su ec2-user -c "protoc -I=/home/ec2-user/kafka-clients/ --python_out=/home/ec2-user/kafka-clients/ /home/ec2-user/kafka-clients/BQT_Cloud_Streaming.proto"
 su ec2-user -c "python3 -m venv /home/ec2-user/kafka-clients/.venv"
 cd /home/ec2-user/kafka-clients/
@@ -30,7 +30,7 @@ deactivate
 cp /usr/lib/jvm/java-11-amazon-corretto.x86_64/lib/security/cacerts /home/ec2-user/kafka/kafka.client.truststore.jks
 
 cat <<EOF > /home/ec2-user/kafka/client_sasl.properties
-security.protocol=SASL_SSL
-sasl.mechanism=SCRAM-SHA-512
+security.protocol=SASL_PAINTEXT
+sasl.mechanism=SCRAM-SHA-256
 ssl.truststore.location=/home/ec2-user/kafka/kafka.client.truststore.jks
 EOF

@@ -5,10 +5,10 @@ import BQT_Cloud_Streaming_pb2 as BQT
 #Import Bootstrap server from environment variable
 brokers = os.environ.get('BROKERS')
 group_id = os.environ.get("KAFKA_GROUP_ID")
+topics = os.environ.get("KAFKA_TOPICS")
 
 #Create Consumer
 consumer = KafkaConsumer(
-    'bqt_qte_str_1','bqt_qte_str_2','bqt_qte_str_3','bqt_qte_str_4','bqt_trd_str_1', #topics to consume
     group_id=group_id, #local consumer name
     bootstrap_servers=brokers, #Brokers List
     api_version=(3,5,1),
@@ -19,6 +19,8 @@ consumer = KafkaConsumer(
     sasl_plain_username=os.environ.get("KAFKA_SASL_USERNAME"),
     sasl_plain_password=os.environ.get("KAFKA_SASL_PASSWORD"),
 )
+
+consumer.subscribe(topics=topics)
 
 print("Starting Kafka Consumer with brokers at ", brokers)
 
