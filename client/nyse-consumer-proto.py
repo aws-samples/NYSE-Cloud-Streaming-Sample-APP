@@ -20,7 +20,7 @@ consumer = KafkaConsumer(
     sasl_plain_password=os.environ.get("KAFKA_SASL_PASSWORD"),
 )
 
-consumer.subscribe(topics=topics)
+consumer.subscribe(topics=list(topics.split(",")))
 
 print("Starting Kafka Consumer with brokers at ", brokers)
 
