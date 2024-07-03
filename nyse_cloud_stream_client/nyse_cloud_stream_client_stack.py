@@ -87,8 +87,6 @@ class NyseCloudStreamClientStack(Stack):
         with open(user_data_path, encoding='utf-8') as f:
             user_data = f.read()
 
-        user_data = user_data+"echo \"export BROKERS='"+str(config.bootstrap_brokers)+"'\" >> /home/ec2-user/.bashrc \n"
-
         # EC2 Instance definition
         instance = ec2.Instance(self, "cloud_stream_consumer_instance",
             instance_type = ec2.InstanceType("t3.large"),
@@ -103,7 +101,7 @@ class NyseCloudStreamClientStack(Stack):
         )
         
         instance.user_data.add_commands(
-            f"echo \"export BROKERS={str(config.bootstrap_brokers)}\" >> /home/ec2-user/.bashrc \n",
+            f"echo \"export BROKERS={','.join(config.bootstrap_brokers)}\" >> /home/ec2-user/.bashrc \n",
             "cd /home/ec2-user",
             "cat <<EOF > /home/ec2-user/kafka/users_jaas.conf",
             "KafkaClient {",
@@ -115,6 +113,6 @@ class NyseCloudStreamClientStack(Stack):
             f'echo \"export KAFKA_SASL_USERNAME={config.cloudstream_username}\" >> /home/ec2-user/.bashrc \n',
             f'echo \"export KAFKA_SASL_PASSWORD={config.cloudstream_password}\" >> /home/ec2-user/.bashrc \n',
             f'echo \"export KAFKA_GROUP_ID={config.cloudstream_group_id}\" >> /home/ec2-user/.bashrc \n',
-            f'echo \"export KAFKA_TOPICS={config.cloudstream_topics}\" >> /home/ec2-user/.bashrc \n',
+            f'echo \"export KAFKA_TOPICS={','.join(config.cloudstream_topics)}\" >> /home/ec2-user/.bashrc \n',
             f'echo \"export KAFKA_OPTS=-Djava.security.auth.login.config=/home/ec2-user/kafka/users_jaas.conf\" >> /home/ec2-user/.bashrc \n',
         )

@@ -13,7 +13,7 @@ consumer = KafkaConsumer(
     bootstrap_servers=brokers, #Brokers List
     api_version=(3,5,1),
     # For mTLS auth:
-    security_protocol='SASL_PAINTEXT',
+    security_protocol='SASL_PLAINTEXT',
     ssl_check_hostname=True,
     sasl_mechanism="SCRAM-SHA-256",
     sasl_plain_username=os.environ.get("KAFKA_SASL_USERNAME"),

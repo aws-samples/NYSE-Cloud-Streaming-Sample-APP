@@ -16,3 +16,7 @@ cloudstream_password=""
 ###
 ec2_key_pair="pulse-key"
 vpc_cidr = "10.10.0.0/16"
+
+
+print(",".join(cloudstream_topics))
+print(",".join(bootstrap_brokers))
