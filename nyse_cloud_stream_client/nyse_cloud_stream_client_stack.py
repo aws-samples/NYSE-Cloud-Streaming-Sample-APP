@@ -87,8 +87,14 @@ class NyseCloudStreamClientStack(Stack):
         with open(user_data_path, encoding='utf-8') as f:
             user_data = f.read()
 
+        # Create an EC2 instance keypair
+        key_pair = ec2.KeyPair.from_key_pair_attributes(self, "KeyPair",
+            key_pair_name=config.ec2_key_pair,
+            type=ec2.KeyPairType.RSA
+        )
+
         # EC2 Instance definition
-        instance = ec2.Instance(self, "cloud_stream_consumer_instance",
+        instance = ec2.Instance(self, "cloud_stream_consumer_instance1",
             instance_type = ec2.InstanceType("t3.large"),
             instance_name = "CloudStream - Consumer Instance",
             machine_image = ec2.MachineImage.latest_amazon_linux2023(),
@@ -97,7 +103,7 @@ class NyseCloudStreamClientStack(Stack):
             vpc_subnets=ec2.SubnetSelection(availability_zones=vpc_azs),
             availability_zone=vpc_azs[1],
             user_data=ec2.UserData.custom(user_data),
-            key_name = config.ec2_key_pair
+            key_pair = key_pair,
         )
         
         instance.user_data.add_commands(
