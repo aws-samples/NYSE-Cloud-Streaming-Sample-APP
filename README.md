@@ -1,6 +1,6 @@
 # NYSE Cloud Streaming sample consumer
 
-This project helps customers to start consuming NYSE Cloud Streaming maket data in AWS.
+This project helps customers to start consuming NYSE Cloud Streaming market data in AWS.
 
 ## NYSE Cloud Streaming
 
@@ -12,7 +12,7 @@ For more details check this [blog post](https://aws.amazon.com/blogs/industries/
 
 This project will build the necessary infra structure using [AWS CDK](https://aws.amazon.com/cdk/) and deploy a sample python script on an EC2 instance to consume the market data.
 
-![Image]()
+![Sample APP Diagram](Sample_APP_diagram.png)
 
 ## Deploying Sample APP
 
@@ -20,7 +20,7 @@ This project will build the necessary infra structure using [AWS CDK](https://aw
 
 1. NYSE Cloud Stream credentials.
 2. NYSE Cloud Stream environment.
-3. Have AWS CLI installed, to connect to your EC2 instance that will consume the market data. Click [here]() for how to install AWS CLI.
+3. Have AWS CLI installed, to connect to your EC2 instance that will consume the market data. Click [here](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) for how to install AWS CLI.
 
 To get credentials and the right environment to use, reach out to NYSE via their [website](https://www.nyse.com/market-data/real-time#contact).
 
@@ -96,3 +96,7 @@ python3 nyse-consumer-proto.py
 Enjoy!
 
 ## Supporting links
+
+* [NYSE Data Products](https://www.nyse.com/data-products)
+* [BQT Website](https://www.nyse.com/market-data/real-time/nyse-bqt)
+* [NYSE BEST QUOTE AND TRADES CLOUD STREAMING CLIENTSPECIFICATION](https://www.nyse.com/publicdocs/nyse/data/NYSE_BQT_Cloud_Streaming_Client_Specification.pdf)
