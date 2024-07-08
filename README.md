@@ -70,9 +70,7 @@ cdk deploy
 ```
 
 After the code deploys, you should see an output that looks like
-```
-NyseCloudStreamClientStack.InstanceID = i-0123456789abcedfg
-```
+`NyseCloudStreamClientStack.InstanceID = i-0123456789abcedfg`
 
 Take note of the instance id to connect to it.
 
