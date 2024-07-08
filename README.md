@@ -1,43 +1,21 @@
+# NYSE Cloud Streaming sample consumer
 
-# Welcome to your CDK Python project!
+This project helps customers to start consuming NYSE Cloud Streaming maket data in AWS.
 
-This is a blank project for CDK development with Python.
+## NYSE Cloud Streaming
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+[NYSE Cloud Streaming](https://www.nyse.com/data-products), is a data distribution platform that enables customers to access and consume real-time streaming exchange data quickly, in a developer-friendly format. With NYSE Cloud Streaming, customers gain access to market data with sub-hundreds of milliseconds latency in the cloud. They can also spin up an environment in AWS within minutes without the upfront cost and logistical hurdles of building out a physical infrastructure footprint. Besides easing challenges related to infrastructure, data is published via NYSE Cloud Streaming in a Kafka-compatible stream, allowing developers to integrate data more easily in a widely used format.
 
-This project is set up like a standard Python project.  The initialization
-process also creates a virtualenv within this project, stored under the `.venv`
-directory.  To create the virtualenv it assumes that there is a `python3`
-(or `python` for Windows) executable in your path with access to the `venv`
-package. If for any reason the automatic creation of the virtualenv fails,
-you can create the virtualenv manually.
+For more details check this [blog post](https://aws.amazon.com/blogs/industries/how-the-new-york-stock-exchange-built-its-real-time-market-data-platform-on-aws/).
 
-To manually create a virtualenv on MacOS and Linux:
+## NYSE Cloud Streaming Sample APP
 
-```
-$ python3 -m venv .venv
-```
+## Deploying Sample APP
 
-After the init process completes and the virtualenv is created, you can use the following
-step to activate your virtualenv.
+### Prerequisites
 
-```
-$ source .venv/bin/activate
-```
+### Deployment Steps
 
-If you are a Windows platform, you would activate the virtualenv like this:
-
-```
-% .venv\Scripts\activate.bat
-```
-
-Once the virtualenv is activated, you can install the required dependencies.
-
-```
-$ pip install -r requirements.txt
-```
-
-At this point you can now synthesize the CloudFormation template for this code.
 
 ```
 $ cdk synth
