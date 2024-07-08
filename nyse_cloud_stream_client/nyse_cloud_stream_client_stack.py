@@ -1,6 +1,6 @@
 import os, boto3
 from aws_cdk import (
-    Stack,Tags,Fn,CfnTag,
+    Stack,Tags,Fn,CfnTag,CfnOutput,
     aws_ec2 as ec2,
     aws_route53 as route53
 )
@@ -116,3 +116,6 @@ class NyseCloudStreamClientStack(Stack):
             f'echo \"export KAFKA_TOPICS={','.join(config.cloudstream_topics)}\" >> /home/ec2-user/.bashrc \n',
             f'echo \"export KAFKA_OPTS=-Djava.security.auth.login.config=/home/ec2-user/kafka/users_jaas.conf\" >> /home/ec2-user/.bashrc \n',
         )
+
+        ## CDK Output instance id
+        CfnOutput(self, "InstanceID", value=instance.instance_id)

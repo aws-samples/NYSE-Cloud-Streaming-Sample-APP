@@ -20,6 +20,7 @@ This project will build the necessary infra structure using [AWS CDK](https://aw
 
 1. NYSE Cloud Stream credentials.
 2. NYSE Cloud Stream environment.
+3. Have AWS CLI installed, to connect to your EC2 instance that will consume the market data. Click [here]() for how to install AWS CLI.
 
 To get credentials and the right environment to use, reach out to NYSE via their [website](https://www.nyse.com/market-data/real-time#contact).
 
@@ -68,21 +69,31 @@ cdk bootstrap
 cdk deploy
 ```
 
+After the code deploys, you should see an output that looks like
+```
+NyseCloudStreamClientStack.InstanceID = i-0123456789abcedfg
+```
+
+Take note of the instance id to connect to it.
+
 ### Starting the Kafka Client
 
-1. Connect to your EC2 Instance
+1. Connect to your EC2 Instance. (Use the instance-id provided on the CDK Deployment output)
 ```
-cdk deploy
+aws ec2-instance-connect ssh --instance-id i-0123456789abcedfg
 ```
 
 2. Go to the client directory and activate your virtual environment
 ```
-cdk deploy
+cd kafka-clients/
+source .venv/bin/activate
 ```
 
 3. Start the client
 ```
-cdk deploy
+python3 nyse-consumer-proto.py 
 ```
 
 Enjoy!
+
+## Supporting links
