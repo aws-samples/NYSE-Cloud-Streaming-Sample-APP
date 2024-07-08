@@ -10,27 +10,79 @@ For more details check this [blog post](https://aws.amazon.com/blogs/industries/
 
 ## NYSE Cloud Streaming Sample APP
 
+This project will build the necessary infra structure using [AWS CDK](https://aws.amazon.com/cdk/) and deploy a sample python script on an EC2 instance to consume the market data.
+
+![Image]()
+
 ## Deploying Sample APP
 
 ### Prerequisites
 
+1. NYSE Cloud Stream credentials.
+2. NYSE Cloud Stream environment.
+
+To get credentials and the right environment to use, reach out to NYSE via their [website](https://www.nyse.com/market-data/real-time#contact).
+
+---
+**NOTE**
+Only after you provide your AWS account ID and get the credentials you will be able to connect to NYSE Cloud Stream
+
+---
+
+
 ### Deployment Steps
 
+1. Clone this repository in your local machine and install the requirements.
 
 ```
-$ cdk synth
+git clone https://github.com/aws-samples/NYSE-Cloud-Streaming-Sample-APP.git
+cd NYSE-Cloud-Streaming-Sample-APP
+pip install –r requirements.txt
 ```
 
-To add additional dependencies, for example other CDK libraries, just add
-them to your `setup.py` file and rerun the `pip install -r requirements.txt`
-command.
+2. Create a [key-pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/create-key-pairs.html) that will be used in your EC2 Instance.
 
-## Useful commands
+3. Change your configuration file to add:
+    - NYSE Cloud Stream credentials
+    - Your EC2 Instance Key Pair
+    - Adjust Bootstrap brokers, Endpoint Service IDs, AZ IDs and Topics according to the environment that you choose to connect to.
 
- * `cdk ls`          list all stacks in the app
- * `cdk synth`       emits the synthesized CloudFormation template
- * `cdk deploy`      deploy this stack to your default AWS account/region
- * `cdk diff`        compare deployed stack with current state
- * `cdk docs`        open CDK documentation
+```
+vi nyse_cloud_stream_client/config.py
+```
+
+4. Set the below environment variables. Specify your AWS account ID below.
+
+```
+set CDK_DEFAULT_ACCOUNT={your_aws_account_id}
+set CDK_DEFAULT_REGION=us-east-1
+```
+
+5. Bootstrap the environment
+```
+cdk bootstrap
+```
+
+6. Deploy the sample app
+```
+cdk deploy
+```
+
+### Starting the Kafka Client
+
+1. Connect to your EC2 Instance
+```
+cdk deploy
+```
+
+2. Go to the client directory and activate your virtual environment
+```
+cdk deploy
+```
+
+3. Start the client
+```
+cdk deploy
+```
 
 Enjoy!
